@@ -19,7 +19,7 @@ var angle = 20; // Unghiul inițial pentru animație
 var slider; // Element de interfață pentru controlul unghiului
 var strokeThick = 5; // Grosimea liniei
 var branchThinning = 0.7; // Subțierea ramurilor
-var sway = 0; // Oscilația copacilor
+var sway = 0; // unghiul de oscilatie a copacilor
 var swaySpeed = 0.1; // Viteza de oscilație
 var maxBend = 3; // Gradul maxim de înclinare a copacilor
 
@@ -28,6 +28,8 @@ function setup() {
     createCanvas(w, h); // Creare canvas cu lățimea și înălțimea specificate
     angleMode(DEGREES); // Setare modul unghiului la grade
 
+
+    //animatie stele
     slider = createSlider(0, TWO_PI, PI / 8, 0.01); // Creare slider cu limite și valoare inițială specificate
     var t = (1.0 - 1.0 / (maxS * maxS * maxS)) / (nStars - 1); // Calcularea unei valori pentru distribuția stelelor
     for (var i = 0; i < nStars; i++) { // Parcurgere stele
@@ -41,8 +43,12 @@ function setup() {
 }
 
 function draw() {
+    textSize(30);
+    fill("yellow");
+    text("Cealic Adrian TI-233",w*0.5,600);
     background(0, 128); // Setare culoare de fundal cu transparență
 
+    //se verifia daca oscilatia a atins limita maxima sau minima,si daca da atunci directia oscilatiei este inversata
     // Simulare vânt în copaci
     sway += swaySpeed; // Creștere oscilație pentru animația copacilor
     if (sway > maxBend || sway < -maxBend) { // Verificare dacă oscilația depășește înclinarea maximă sau minimă
@@ -69,7 +75,7 @@ function draw() {
     // Desenare peisaj cu vânt în copaci
     translate(w / 2, h / 2 + 200); // Translatare la centrul canvas-ului
     tabara(); // Desenare peisaj tabără
-    ramura(75, sway); // Desenare ramuri ale copacilor
+    copac(75, sway); // Desenare ramuri ale copacilor
 }
 
 function luna() {
@@ -98,7 +104,9 @@ function tabara() {
     }
 }
 
-function ramura(len, sway) {
+function copac(len, sway) {
+    //lungimea oscilatiilor si ramurilor sunt transmise ca argumente
+    //oscilatia este aplicata la nivelul fiecarei ramuri prin rotirea si inclinarea ramurii in functie de valoarea sway
     push(); // Salvare stare de desenare curentă
     if (len > 12) { // Verificare dacă lungimea ramurii este mai mare de 12
         strokeWeight(map(len, 10, 100, 1, 15)); // Setare grosime linie în funcție de lungimea ramurii
@@ -106,9 +114,9 @@ function ramura(len, sway) {
         line(0, 0, 0, -len); // Desenare linie ramură
         translate(0, -len); // Mutare origine la capătul ramurii
         rotate(random(-30, -30) + sway); // Rotire ramură aleatoriu cu oscilație
-        ramura(len * random(0.7, 0.9), sway); // Apel recursiv pentru desenare ramuri mai mici
+        copac(len * random(0.7, 0.9), sway); // Apel recursiv pentru desenare ramuri mai mici
         rotate(random(70, 50) + sway); // Rotire ramură în direcție opusă
-        ramura(len * random(0.7, 0.9), sway); // Apel recursiv pentru desenare ramuri mai mici
+        copac(len * random(0.7, 0.9), sway); // Apel recursiv pentru desenare ramuri mai mici
     } else {
         var r = 90; // Setare componentă roșie a culorii
         var g = 120; // Setare componentă verde a culorii
