@@ -20,32 +20,34 @@ var slider; // Element de interfață pentru controlul unghiului
 var strokeThick = 5; // Grosimea liniei
 var branchThinning = 0.7; // Subțierea ramurilor
 var sway = 0; // unghiul de oscilatie a copacilor
-var swaySpeed = 0.1; // Viteza de oscilație
+var swaySpeed = 0.3; // Viteza de oscilație
 var maxBend = 3; // Gradul maxim de înclinare a copacilor
 
 function setup() {
+    // text();
     pixelDensity(3); // Setare densitate de pixeli pentru ecrane de înaltă rezoluție
     createCanvas(w, h); // Creare canvas cu lățimea și înălțimea specificate
     angleMode(DEGREES); // Setare modul unghiului la grade
-
-
+    
     //animatie stele
     slider = createSlider(0, TWO_PI, PI / 8, 0.01); // Creare slider cu limite și valoare inițială specificate
-    var t = (1.0 - 1.0 / (maxS * maxS * maxS)) / (nStars - 1); // Calcularea unei valori pentru distribuția stelelor
+    var t = (1.0 - 1.0 / (maxS * maxS * maxS)) / (nStars -1 ); // Calcularea unei valori pentru distribuția stelelor
     for (var i = 0; i < nStars; i++) { // Parcurgere stele
         s[i] = pow(1.0 / (1.0 - t * i), 0.33333333); // Calculare dimensiune stea
         x[i] = random(worldSize + 8.0 * s[i]); // Setare coordonată X aleatorie pentru stea
         y[i] = random(worldSize + 8.0 * s[i]); // Setare coordonată Y aleatorie pentru stea
     }
-
+    
     angle = -0.2; // Setare unghi inițial pentru animație
     speed = 8.0 / maxS; // Setare viteză inițială pentru animație
 }
 
 function draw() {
+    
     textSize(30);
     fill("yellow");
     text("Cealic Adrian TI-233",w*0.5,600);
+
     background(0, 128); // Setare culoare de fundal cu transparență
 
     //se verifia daca oscilatia a atins limita maxima sau minima,si daca da atunci directia oscilatiei este inversata
@@ -74,9 +76,13 @@ function draw() {
 
     // Desenare peisaj cu vânt în copaci
     translate(w / 2, h / 2 + 200); // Translatare la centrul canvas-ului
+   
     tabara(); // Desenare peisaj tabără
+
     copac(75, sway); // Desenare ramuri ale copacilor
+    
 }
+
 
 function luna() {
     fill(255); // Setare culoare umplere alb
@@ -85,6 +91,7 @@ function luna() {
 }
 
 function tabara() {
+    
     fill("GREEN"); // Setare culoare umplere verde
     ellipse(100, height / 2 - 70, windowWidth + 1000, windowHeight); // Desenare sol
     randomSeed(42); // Setare seed aleator pentru valori aleatoare consistente
@@ -102,9 +109,11 @@ function tabara() {
         vertex(x + sway * 3, y); // Desenare vârf
         endShape(CLOSE); // Sfârșit desen copac
     }
+    
 }
 
 function copac(len, sway) {
+    
     //lungimea oscilatiilor si ramurilor sunt transmise ca argumente
     //oscilatia este aplicata la nivelul fiecarei ramuri prin rotirea si inclinarea ramurii in functie de valoarea sway
     push(); // Salvare stare de desenare curentă
@@ -141,4 +150,6 @@ function copac(len, sway) {
         endShape(CLOSE); // Sfârșit desen frunză
     }
     pop(); // Restaurare stare de desenare anterioară
+
+    
 }

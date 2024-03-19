@@ -1,0 +1,6 @@
+body, canvas {
+  margin: 0px; 
+  padding: 0px; 
+  position: absolute; 
+  background-color: #303030; 
+}
