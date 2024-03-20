@@ -32,17 +32,16 @@ function draw() {
   speedY = speed * sin( angle );
  
   for( var i=0; i<nStars; i++ ) {
-    if( x[i] < worldSize+2*s[i] && y[i] < worldSize+2*s[i] ) {
-      strokeWeight( s[i] );
-      //noStroke();
-      stroke( map( s[i], 1.0, maxS, 128, 255 ) );
-      //ellipse( x[i]-s[i], y[i]-s[i], s[i], s[i] );
-      //point( x[i]-s[i], y[i]-s[i] );
+    if( x[i] < worldSize+2*s[i] && y[i] < worldSize+2*s[i] ) { //se verifica daca steaua se afla in canvas ca sa nu fie desenate in afara zonei vizibile
+      strokeWeight( s[i] ); //grosimea linei pentru stea
+      stroke( map( s[i], 1.0, maxS, 128, 255 ) ); //cele mai mari vor avea culoarea mai inchisa cele mai mici culaorea mai inchisa
       line( x[i]-s[i], y[i]-s[i], 
-            x[i]-s[i]+speedX*(s[i]-0.99), y[i]-s[i]+speedY*(s[i]-0.99) );
+            x[i]-s[i]+speedX*(s[i]-0.99), y[i]-s[i]+speedY*(s[i]-0.99) ); //traiectoria stelei in functie de viteza si directia navei spatiale
     }
-    var wrap = worldSize + 8.0 * s[i];
-    x[i] = (x[i] - speedX * (s[i]-0.99) + wrap) % wrap;
+    var wrap = worldSize + 8.0 * s[i]; //in caz ca ies sstelele din canvas sa apara din partea opusa
+    x[i] = (x[i] - speedX * (s[i]-0.99) + wrap) % wrap; //se actualizeaza coordonata x a stelei prin scaderea 
+    //unui anumit procent din viteza navei spatiale,astfel incat stelele sa apara a fi pe fundalul miscator.
+    // totodata se asigura ca stelele reapar uniform pe partea opusa a ecranului atunci cand trec de marginea lumii
     y[i] = (y[i] - speedY * (s[i]-0.99) + wrap) % wrap;
   }
  
@@ -50,7 +49,6 @@ function draw() {
   noStroke();
   fill( 255, 255, 128 );
   scale(2);
-  text( floor(frameCount / millis() * 100000)/100, 10, 20 );
   text( floor(speed * 1000), 10, 40 );
   pop();
   translate( worldSize/2, worldSize/2 );
@@ -65,7 +63,7 @@ function draw() {
 }
  
 function drawShip() {
-  colorMode( HSB, 360, 100, 100, 100 );
+  colorMode( HSB, 100, 100, 100, 100 );
   noStroke();
  
   // wings
@@ -91,7 +89,7 @@ function checkControls() {
     angle += 0.04;
   }
   if( keyIsDown( UP_ARROW ) ) {
-    speed += 0.2 / maxS;
+    speed += 0.40 / maxS;
     if( speed > maxS * 5 ) {
       speed = maxS * 5;
     }
